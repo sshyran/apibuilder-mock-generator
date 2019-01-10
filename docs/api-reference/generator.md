@@ -4,7 +4,7 @@ A class responsible for generating mock data based on apibuilder schema specific
 
 ## Methods
 
-### `model(name: String, options: MockGeneratorOptions): { [key: String]: Any }`
+### `model(name: String, options: Object)`
 
 This method generates the mock data for the model matching the specified name.
 
