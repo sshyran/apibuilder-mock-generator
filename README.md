@@ -1,4 +1,4 @@
-# @flowio/apibuilder-mock-generator
+# apibuilder-mock-generator
 
 A mock data generator based on API Builder specifications for JavaScript
 
