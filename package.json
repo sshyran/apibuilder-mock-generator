@@ -1,0 +1,48 @@
+{
+  "name": "apibuilder-mock-generator",
+  "version": "0.0.0",
+  "description": "A mock data generator based on API Builder specifications for JavaScript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "coverage": "jest --coverage",
+    "lint": "tslint -c tslint.json -p tsconfig.json './src/**/*.{js,ts}'",
+    "prepare": "npm run clean && npm run build",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apicollective/apibuilder-mock-generator.git"
+  },
+  "keywords": [
+    "apibuilder",
+    "mock",
+    "data",
+    "generator"
+  ],
+  "author": "Flow Commerce",
+  "contributors": [
+    "Christian Muñoz <christian.munoz@flow.io>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apicollective/apibuilder-mock-generator/issues"
+  },
+  "homepage": "https://github.com/apicollective/apibuilder-mock-generator#readme",
+  "dependencies": {
+    "apibuilder-js": "0.0.3",
+    "faker": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/faker": "^4.1.4",
+    "@types/jest": "^23.3.10",
+    "@types/node": "^10.12.12",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "typescript": "^3.2.2"
+  }
+}
