@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/apicollective/apibuilder-mock-generator.svg?branch=master)](https://travis-ci.org/apicollective/apibuilder-mock-generator)
+
 # apibuilder-mock-generator
 
 A mock data generator based on API Builder specifications for JavaScript
