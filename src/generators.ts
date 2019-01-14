@@ -140,7 +140,32 @@ export function mockModel(
 
 export function mockUnion(union: ApiBuilderUnion): any {
   const type = faker.random.arrayElement(union.types);
-  return (type != null) ? mock(type.type) : undefined;
+
+  let discriminatorKey;
+
+  if (union.discriminator != null) {
+    discriminatorKey = union.discriminator;
+  } else {
+    discriminatorKey = 'discriminator';
+  }
+
+  let discriminatorValue;
+
+  if (type.discriminatorValue != null) {
+    discriminatorValue = type.discriminatorValue;
+  } else if (
+    isUnionType(type.type)
+    || isModelType(type.type)
+    || isEnumType(type.type)
+    || isPrimitiveType(type.type)
+  ) {
+    discriminatorValue = type.type.shortName;
+  }
+
+  return (type != null) ? {
+    [discriminatorKey]: discriminatorValue,
+    ...mock(type.type),
+  } : undefined;
 }
 
 export function mock(type: ApiBuilderPrimitiveType): any;
