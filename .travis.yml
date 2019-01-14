@@ -15,8 +15,7 @@ jobs:
     script: npm run lint
   - name: "Unit Tests"
     script: npm run coverage -- --maxWorkers=4 --ci
-  - stage: build
-    name: "Compile"
+  - name: "Compile"
     script: npm run build
 branches:
   only:
