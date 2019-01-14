@@ -1,5 +1,7 @@
+/* tslint:disable max-line-length */
+
 import * as apibuilder from 'apibuilder-js';
-import { mockPrimitive, mockArray, mockMap, mockModel, mockEnum } from '../../src/generators';
+import { mockPrimitive, mockArray, mockMap, mockModel, mockEnum, mockUnion } from '../../src/generators';
 import { createApiBuilderServiceConfig } from '../helpers/apibuilder';
 import { isJson, isUuid, isDateIso8601, isDateTimeIso8601 } from '../helpers/predicates';
 
@@ -526,6 +528,132 @@ describe('mockModel', () => {
       const mock = mockModel(model);
       expect(mock).toHaveProperty('name', expect.any(String));
       expect(mock.name.length).toBeGreaterThanOrEqual(10);
+    });
+  });
+});
+
+describe('mockUnion', () => {
+  test('creates a discriminator field with the selected union type name as the discriminator value', () => {
+    const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
+      unions: [{
+        name: 'pet',
+        plural: 'pets',
+        types: [{
+          type: 'mammal',
+          attributes: [],
+        }],
+        attributes: [],
+      }],
+      models: [{
+        name: 'mammal',
+        plural: 'mammals',
+        fields: [{
+          name: 'fur',
+          type: 'string',
+          attributes: [],
+          required: true,
+        }],
+        attributes: [],
+      }],
+    }));
+
+    service.unions.forEach((union) => {
+      const mock = mockUnion(union);
+      expect(mock).toHaveProperty('discriminator', 'mammal');
+    });
+  });
+
+  test('creates a discriminator field with the discriminator value specified in the selected union type schema', () => {
+    const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
+      unions: [{
+        name: 'pet',
+        plural: 'pets',
+        types: [{
+          discriminator_value: 'mamifero',
+          type: 'mammal',
+          attributes: [],
+        }],
+        attributes: [],
+      }],
+      models: [{
+        name: 'mammal',
+        plural: 'mammals',
+        fields: [{
+          name: 'fur',
+          type: 'string',
+          attributes: [],
+          required: true,
+        }],
+        attributes: [],
+      }],
+    }));
+
+    service.unions.forEach((union) => {
+      const mock = mockUnion(union);
+      expect(mock).toHaveProperty('discriminator', 'mamifero');
+    });
+  });
+
+  test('creates discriminator field specified in the union schema with the selected union type name as the discriminator value', () => {
+    const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
+      unions: [{
+        discriminator: 'kind',
+        name: 'pet',
+        plural: 'pets',
+        types: [{
+          type: 'mammal',
+          attributes: [],
+        }],
+        attributes: [],
+      }],
+      models: [{
+        name: 'mammal',
+        plural: 'mammals',
+        fields: [{
+          name: 'fur',
+          type: 'string',
+          attributes: [],
+          required: true,
+        }],
+        attributes: [],
+      }],
+    }));
+
+    service.unions.forEach((union) => {
+      const mock = mockUnion(union);
+      expect(mock).toHaveProperty('kind', 'mammal');
+    });
+  });
+
+  test('creates discriminator field specified in the union schema with the discriminator value specified in the selected union type schema', () => {
+    const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
+      unions: [{
+        discriminator: 'kind',
+        name: 'pet',
+        plural: 'pets',
+        types: [{
+          discriminator_value: 'mamifero',
+          type: 'mammal',
+          attributes: [],
+        }],
+        attributes: [],
+      }],
+      models: [{
+        name: 'mammal',
+        plural: 'mammals',
+        fields: [{
+          name: 'fur',
+          type: 'string',
+          attributes: [],
+          required: true,
+        }],
+        attributes: [],
+      }],
+    }));
+
+    service.unions.forEach((union) => {
+      const mock = mockUnion(union);
+      expect(mock).toHaveProperty('kind', 'mamifero');
     });
   });
 });
