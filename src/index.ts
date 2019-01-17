@@ -11,6 +11,7 @@ import {
   mockModel,
   mockUnion,
   ModelGeneratorOptions,
+  UnionGeneratorOptions,
 } from './generators';
 
 export class Generator {
@@ -40,14 +41,14 @@ export class Generator {
     return mockModel(type, options);
   }
 
-  public union(name: string) {
+  public union(name: string, options: UnionGeneratorOptions) {
     const type = this.service.findTypeByName(name);
 
     if (!isUnionType(type)) {
       throw new Error(`${name} did not match an union in ${this.service} service`);
     }
 
-    return mockUnion(type);
+    return mockUnion(type, options);
   }
 }
 

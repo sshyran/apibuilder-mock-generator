@@ -93,7 +93,7 @@ export function mockEnum(enumeration: ApiBuilderEnum): string | undefined {
 export interface ModelGeneratorOptions {
   readonly onlyRequired?: boolean;
   readonly useDefault?: boolean;
-  readonly properties?: Map<string>;
+  readonly properties?: Map<any>;
 }
 
 export function mockModel(
@@ -139,34 +139,51 @@ export function mockModel(
   }, {}); /* tslint:disable-line align */
 }
 
-export function mockUnion(union: ApiBuilderUnion): any {
-  const type = faker.random.arrayElement(union.types);
+export interface UnionGeneratorOptions {
+  readonly type?: string;
+  readonly properties?: Map<any>;
+}
 
-  let discriminatorKey;
+export function mockUnion(
+  union: ApiBuilderUnion,
+  options: UnionGeneratorOptions = {},
+): any {
+  const {
+    type,
+    properties = {},
+  } = options;
 
-  if (union.discriminator != null) {
-    discriminatorKey = union.discriminator;
-  } else {
-    discriminatorKey = 'discriminator';
+  const unionType = (type != null)
+    ? union.types.find(unionType => unionType.typeName === type)
+    : faker.random.arrayElement(union.types);
+
+  if (unionType == null) {
+    throw new Error(`${type} is not an union type in ${union} union.`);
   }
 
-  let discriminatorValue;
+  const discriminatorKey = union.discriminator;
+  const discriminatorValue = unionType.discriminatorValue;
 
-  if (type.discriminatorValue != null) {
-    discriminatorValue = type.discriminatorValue;
-  } else if (
-    isUnionType(type.type)
-    || isModelType(type.type)
-    || isEnumType(type.type)
-    || isPrimitiveType(type.type)
-  ) {
-    discriminatorValue = type.type.shortName;
+  if (isPrimitiveType(unionType.type) || isEnumType(unionType.type)) {
+    return {
+      [discriminatorKey]: discriminatorValue,
+      value: properties.hasOwnProperty('value') ? properties.value : mock(unionType.type),
+    };
   }
 
-  return (type != null) ? {
+  if (isModelType(unionType.type)) {
+    return {
+      [discriminatorKey]: discriminatorValue,
+      ...mockModel(unionType.type, {
+        properties,
+      }),
+    };
+  }
+
+  return {
     [discriminatorKey]: discriminatorValue,
-    ...mock(type.type),
-  } : undefined;
+    ...mock(unionType.type),
+  };
 }
 
 export function mock(type: ApiBuilderPrimitiveType): any;

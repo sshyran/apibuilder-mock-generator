@@ -533,25 +533,14 @@ describe('mockModel', () => {
 });
 
 describe('mockUnion', () => {
-  test('creates a discriminator field with the selected union type name as the discriminator value', () => {
+  test('can generate primitive union types', () => {
     const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
       unions: [{
-        name: 'pet',
-        plural: 'pets',
+        name: 'response_code',
+        plural: 'response_codes',
         types: [{
-          type: 'mammal',
+          type: 'integer',
           attributes: [],
-        }],
-        attributes: [],
-      }],
-      models: [{
-        name: 'mammal',
-        plural: 'mammals',
-        fields: [{
-          name: 'fur',
-          type: 'string',
-          attributes: [],
-          required: true,
         }],
         attributes: [],
       }],
@@ -559,30 +548,62 @@ describe('mockUnion', () => {
 
     service.unions.forEach((union) => {
       const mock = mockUnion(union);
-      expect(mock).toHaveProperty('discriminator', 'mammal');
+      expect(mock).toEqual({
+        discriminator: 'integer',
+        value: expect.any(Number),
+      });
     });
   });
 
-  test('creates a discriminator field with the discriminator value specified in the selected union type schema', () => {
+  test('can generate enum union types', () => {
     const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
       unions: [{
-        name: 'pet',
-        plural: 'pets',
+        name: 'response_code',
+        plural: 'response_codes',
         types: [{
-          discriminator_value: 'mamifero',
-          type: 'mammal',
+          type: 'response_code_option',
+          attributes: [],
+        }],
+        attributes: [],
+      }],
+      enums: [{
+        name: 'response_code_option',
+        plural: 'response_code_options',
+        values: [
+          { name: 'default' },
+        ],
+        attributes: [],
+      }],
+    }));
+
+    service.unions.forEach((union) => {
+      const mock = mockUnion(union);
+      expect(mock).toEqual({
+        discriminator: 'response_code_option',
+        value: 'default',
+      });
+    });
+  });
+
+  test('can generate model union types', () => {
+    const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
+      unions: [{
+        name: 'diff',
+        plural: 'diffs',
+        types: [{
+          type: 'diff_breaking',
           attributes: [],
         }],
         attributes: [],
       }],
       models: [{
-        name: 'mammal',
-        plural: 'mammals',
+        name: 'diff_breaking',
+        plural: 'diff_breakings',
         fields: [{
-          name: 'fur',
+          name: 'description',
           type: 'string',
-          attributes: [],
           required: true,
+          attributes: [],
         }],
         attributes: [],
       }],
@@ -590,30 +611,83 @@ describe('mockUnion', () => {
 
     service.unions.forEach((union) => {
       const mock = mockUnion(union);
-      expect(mock).toHaveProperty('discriminator', 'mamifero');
+      expect(mock).toEqual({
+        discriminator: 'diff_breaking',
+        description: expect.any(String),
+      });
     });
   });
 
-  test('creates discriminator field specified in the union schema with the selected union type name as the discriminator value', () => {
+  test('allows selection of union type to be generated', () => {
+    const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
+      unions: [{
+        name: 'response_code',
+        plural: 'response_codes',
+        types: [{
+          type: 'integer',
+          attributes: [],
+        }, {
+          type: 'string',
+          attributes: [],
+        }, {
+          type: 'response_status',
+          attributes: [],
+        }],
+        attributes: [],
+      }],
+      enums: [{
+        name: 'response_status',
+        plural: 'response_statuses',
+        values: [
+          { name: 'ok' },
+        ],
+        attributes: [],
+      }],
+    }));
+
+    service.unions.forEach((union) => {
+      const mock = mockUnion(union, {
+        type: 'response_status',
+      });
+      expect(mock).toEqual({
+        discriminator: 'response_status',
+        value: 'ok',
+      });
+    });
+  });
+
+  test('takes into consideration the discriminator value specified in the union type schema', () => {
+    const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
+      unions: [{
+        name: 'response_code',
+        plural: 'response_codes',
+        types: [{
+          discriminator_value: 'response_status',
+          type: 'integer',
+          attributes: [],
+        }],
+        attributes: [],
+      }],
+    }));
+
+    service.unions.forEach((union) => {
+      const mock = mockUnion(union);
+      expect(mock).toEqual({
+        discriminator: 'response_status',
+        value: expect.any(Number),
+      });
+    });
+  });
+
+  test('takes into consideration discriminator key specified in the union schema', () => {
     const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
       unions: [{
         discriminator: 'kind',
-        name: 'pet',
-        plural: 'pets',
+        name: 'response_code',
+        plural: 'response_codes',
         types: [{
-          type: 'mammal',
+          type: 'integer',
           attributes: [],
-        }],
-        attributes: [],
-      }],
-      models: [{
-        name: 'mammal',
-        plural: 'mammals',
-        fields: [{
-          name: 'fur',
-          type: 'string',
-          attributes: [],
-          required: true,
         }],
         attributes: [],
       }],
@@ -621,31 +695,23 @@ describe('mockUnion', () => {
 
     service.unions.forEach((union) => {
       const mock = mockUnion(union);
-      expect(mock).toHaveProperty('kind', 'mammal');
+      expect(mock).toEqual({
+        kind: 'integer',
+        value: expect.any(Number),
+      });
     });
   });
 
-  test('creates discriminator field specified in the union schema with the discriminator value specified in the selected union type schema', () => {
+  test('takes into consideration discriminator key and value specified schema', () => {
     const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
       unions: [{
         discriminator: 'kind',
-        name: 'pet',
-        plural: 'pets',
+        name: 'response_code',
+        plural: 'response_codes',
         types: [{
-          discriminator_value: 'mamifero',
-          type: 'mammal',
+          discriminator_value: 'response_status',
+          type: 'integer',
           attributes: [],
-        }],
-        attributes: [],
-      }],
-      models: [{
-        name: 'mammal',
-        plural: 'mammals',
-        fields: [{
-          name: 'fur',
-          type: 'string',
-          attributes: [],
-          required: true,
         }],
         attributes: [],
       }],
@@ -653,7 +719,10 @@ describe('mockUnion', () => {
 
     service.unions.forEach((union) => {
       const mock = mockUnion(union);
-      expect(mock).toHaveProperty('kind', 'mamifero');
+      expect(mock).toEqual({
+        kind: 'response_status',
+        value: expect.any(Number),
+      });
     });
   });
 });

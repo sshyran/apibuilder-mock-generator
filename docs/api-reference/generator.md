@@ -18,7 +18,7 @@ This method generates the mock data for the model matching the specified name.
 
   - `onlyRequired` *(Boolean)*: This property holds whether the generator should generate mock data for required fields only. By default, this option is set to `false`.
 
-  - `properties` *(Object)*: Use this property to specify the value for the fields in the model to be generated.
+  - `properties` *(Object)*: This property holds the values for the properties of the model being generated.
 
 #### Returns
 
@@ -99,7 +99,7 @@ generator.enum('method');
   generator.enum('io.apibuilder.spec.v0.enums.method');
   ```
 
-### `union(name: String)`
+### `union(name: String, options: Object)`
 
 This method generates the mock data for the union matching the specified name.
 
@@ -107,6 +107,11 @@ This method generates the mock data for the union matching the specified name.
 
 1. `name` *(String)*: The name of the union to be generated.
 
+2. `options` *(Object)*:): Options that can be used to configure the generator. The options are:
+
+  - `type` *(String)*: This property holds the name of the union type to be generated.
+
+  - `properties` *(Object)*: This property holds the values for the properties of the type being generated.
 
 #### Returns
 
@@ -121,6 +126,17 @@ import schemaJson from './schema.json';
 const generator: Generator = createMockGenerator(schemaJson);
 
 generator.union('response_code');
+
+generator.union('response_code', {
+  type: 'response_code_option',
+});
+
+generator.union('response_code', {
+  type: 'integer',
+  properties: {
+    value: 200,
+  }
+});
 ```
 
 #### Tips

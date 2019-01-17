@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/apicollective/apibuilder-mock-generator#readme",
   "dependencies": {
-    "apibuilder-js": "0.0.3",
+    "apibuilder-js": "0.0.4",
     "faker": "^4.1.0"
   },
   "devDependencies": {
@@ -41,7 +41,7 @@
     "@types/node": "^10.12.12",
     "jest": "^23.6.0",
     "ts-jest": "^23.10.5",
-    "tslint": "^5.11.0",
+    "tslint": "^5.12.1",
     "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.2.2"
   }
