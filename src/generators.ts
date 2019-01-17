@@ -69,7 +69,8 @@ export function mockArray(
     max: Math.max(minimum, maximum),
   });
 
-  return Array.from({ length }, () => mock(array.ofType));
+  return Array.from({ length }, () => mock(array.ofType))
+    .filter(type => type != null);
 }
 
 export function mockMap(map: ApiBuilderMap): Map<any> {

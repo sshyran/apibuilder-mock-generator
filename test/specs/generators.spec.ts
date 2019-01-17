@@ -723,6 +723,23 @@ describe('mockArray', () => {
       });
     });
   });
+
+  test('does not generate nil values for array of enums without values', () => {
+    const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
+      enums: [{
+        name: 'breed',
+        plural: 'breeds',
+        values: [],
+        attributes: [],
+      }],
+    }));
+
+    service.enums.forEach((enumeration) => {
+      const array = new apibuilder.ApiBuilderArray(enumeration);
+      const mock = mockArray(array, { minimum: 1 });
+      expect(mock).toEqual([]);
+    });
+  });
 });
 
 describe('mockMap', () => {
