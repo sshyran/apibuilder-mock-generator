@@ -93,6 +93,7 @@ export function mockEnum(enumeration: ApiBuilderEnum): string | undefined {
 export interface ModelGeneratorOptions {
   readonly onlyRequired?: boolean;
   readonly useDefault?: boolean;
+  readonly useExample?: boolean;
   readonly properties?: Map<any>;
 }
 
@@ -103,6 +104,7 @@ export function mockModel(
   const {
     onlyRequired = false,
     useDefault = false,
+    useExample = false,
     properties = {},
   } = options;
 
@@ -113,9 +115,12 @@ export function mockModel(
 
     const hasRange = field.minimum != null || field.maximum != null;
     const hasDefault = field.default != null;
+    const hasExample = field.example != null;
 
     if (properties.hasOwnProperty(field.name)) {
       value = properties[field.name];
+    } else if (hasExample && useExample) {
+      value = field.example;
     } else if (!field.isRequired && hasDefault && useDefault) {
       value = field.default;
     } else if (isArrayType(field.type) && hasRange) {

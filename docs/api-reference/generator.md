@@ -16,6 +16,8 @@ This method generates the mock data for the model matching the specified name.
 
   - `useDefault` *(Boolean)*: This property holds whether the generator should use the field default values specified in the apibuilder schema when available. This rule only applies to fields that are not required. By default, this option is set to `false`.
 
+  - `useExample` *(Boolean)*: This property holds whether the generator should use the field example values specified in the apibuilder scheme when available.
+
   - `onlyRequired` *(Boolean)*: This property holds whether the generator should generate mock data for required fields only. By default, this option is set to `false`.
 
   - `properties` *(Object)*: This property holds the values for the properties of the model being generated.
@@ -41,6 +43,10 @@ generator.model('model', {
 generator.model('model', {
   onlyRequired: true,
   useDefault: true,
+});
+
+generator.model('model', {
+  useExample: true,
 });
 
 generator.model('model', {

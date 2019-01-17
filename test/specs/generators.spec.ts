@@ -340,6 +340,60 @@ describe('mockModel', () => {
     });
   });
 
+  test('can use field examples as generated value', () => {
+    const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
+      models: [{
+        name: 'pet',
+        plural: 'pets',
+        fields: [{
+          name: 'id',
+          type: 'uuid',
+          attributes: [],
+          required: true,
+        }, {
+          name: 'name',
+          type: 'string',
+          attributes: [],
+          required: true,
+          example: 'Lucy',
+        }],
+        attributes: [],
+      }],
+    }));
+
+    service.models.forEach((model) => {
+      expect(mockModel(model, {
+        useExample: true,
+      })).toHaveProperty('name', 'Lucy');
+    });
+  });
+
+  test('does not use field example as generated value', () => {
+    const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
+      models: [{
+        name: 'pet',
+        plural: 'pets',
+        fields: [{
+          name: 'id',
+          type: 'uuid',
+          attributes: [],
+          required: true,
+        }, {
+          name: 'name',
+          type: 'string',
+          attributes: [],
+          required: true,
+          example: 'Lucy',
+        }],
+        attributes: [],
+      }],
+    }));
+
+    service.models.forEach((model) => {
+      expect(mockModel(model)).not.toHaveProperty('name', 'Lucy');
+    });
+  });
+
   test('can override field values', () => {
     const service = new apibuilder.ApiBuilderService(createApiBuilderServiceConfig({
       models: [{
