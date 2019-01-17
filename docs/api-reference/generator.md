@@ -18,7 +18,7 @@ This method generates the mock data for the model matching the specified name.
 
   - `onlyRequired` *(Boolean)*: This property holds whether the generator should generate mock data for required fields only. By default, this option is set to `false`.
 
-  - `overrideProps` *(Object)*: Use this property to specify the value for the fields in the model to be generated.
+  - `properties` *(Object)*: Use this property to specify the value for the fields in the model to be generated.
 
 #### Returns
 
@@ -44,7 +44,7 @@ generator.model('model', {
 });
 
 generator.model('model', {
-  overrideProps: {
+  properties: {
     fields: [
       generate.model('field', {
         name: 'name',

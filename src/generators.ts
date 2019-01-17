@@ -93,17 +93,17 @@ export function mockEnum(enumeration: ApiBuilderEnum): string | undefined {
 export interface ModelGeneratorOptions {
   readonly onlyRequired?: boolean;
   readonly useDefault?: boolean;
-  readonly overrideProps?: { [key: string]: any };
+  readonly properties?: Map<string>;
 }
 
 export function mockModel(
   model: ApiBuilderModel,
   options: ModelGeneratorOptions = {},
-): { [key: string]: any } {
+): Map<string> {
   const {
     onlyRequired = false,
     useDefault = false,
-    overrideProps = {},
+    properties = {},
   } = options;
 
   return model.fields.filter((field) => {
@@ -114,8 +114,8 @@ export function mockModel(
     const hasRange = field.minimum != null || field.maximum != null;
     const hasDefault = field.default != null;
 
-    if (overrideProps.hasOwnProperty(field.name)) {
-      value = overrideProps[field.name];
+    if (properties.hasOwnProperty(field.name)) {
+      value = properties[field.name];
     } else if (!field.isRequired && hasDefault && useDefault) {
       value = field.default;
     } else if (isArrayType(field.type) && hasRange) {
@@ -171,7 +171,7 @@ export function mockUnion(union: ApiBuilderUnion): any {
 
 export function mock(type: ApiBuilderPrimitiveType): any;
 export function mock(type: ApiBuilderArray, options?: ArrayGeneratorOptions): any[];
-export function mock(type: ApiBuilderMap): { [key: string]: any };
+export function mock(type: ApiBuilderMap): Map<string>;
 export function mock(type: ApiBuilderModel, options?: ModelGeneratorOptions): object;
 export function mock(type: ApiBuilderEnum): string;
 export function mock(type: ApiBuilderUnion): any;

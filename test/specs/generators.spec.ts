@@ -362,7 +362,7 @@ describe('mockModel', () => {
 
     service.models.forEach((model) => {
       expect(mockModel(model, {
-        overrideProps: {
+        properties: {
           name: 'Papi',
         },
       })).toEqual(expect.objectContaining({
