@@ -1,6 +1,6 @@
 {
   "name": "apibuilder-mock-generator",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A mock data generator based on API Builder specifications for JavaScript",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
