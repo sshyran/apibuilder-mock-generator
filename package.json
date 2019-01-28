@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/apicollective/apibuilder-mock-generator#readme",
   "dependencies": {
-    "apibuilder-js": "0.0.4",
+    "apibuilder-js": "0.0.5",
     "faker": "^4.1.0"
   },
   "devDependencies": {

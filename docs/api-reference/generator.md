@@ -155,3 +155,32 @@ generator.union('response_code', {
   generator.enum('io.apibuilder.spec.v0.unions.response_code');
   ```
 
+### `response(params: Object)`
+
+This method generates the mock data for the response matching the specified path, operation, and response code.
+
+#### Arguments
+
+1. `params` *(Object)*: The parameters used to find the response to be generated.
+
+  - `path` *(String)*: This property holds the path for the operation to be generated.
+
+  - `operation` *(String)*: This property holds the method for the operation to be generated.
+
+  - `response` *(String)*: This property holds the response code for the operation to be generated.
+
+#### Returns
+
+*(Any)* The mock data for one of the possible response types.
+
+```javascript
+import { createMockGenerator, Generator } from 'apibuilder-mock-generator';
+import schemaJson from './schema.json';
+
+const generator: Generator = createMockGenerator(schemaJson);
+
+generator.response({
+  path: '/:orgKey/metadata/:applicationKey/versions',
+  operation: 'GET',
+  response: 200,
+});

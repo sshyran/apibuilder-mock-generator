@@ -13,6 +13,9 @@ import {
   isModelType,
   isPrimitiveType,
   isUnionType,
+  ApiBuilderMethod,
+  ApiBuilderOperation,
+  ApiBuilderResponse,
 } from 'apibuilder-js';
 
 import faker from 'faker';
@@ -189,6 +192,10 @@ export function mockUnion(
     [discriminatorKey]: discriminatorValue,
     ...mock(unionType.type),
   };
+}
+
+export function mockResponse(response: ApiBuilderResponse) {
+  return mock(response.type);
 }
 
 export function mock(type: ApiBuilderPrimitiveType): any;
