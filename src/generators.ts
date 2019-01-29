@@ -13,8 +13,6 @@ import {
   isModelType,
   isPrimitiveType,
   isUnionType,
-  ApiBuilderMethod,
-  ApiBuilderOperation,
   ApiBuilderResponse,
 } from 'apibuilder-js';
 
@@ -111,16 +109,19 @@ export function mockModel(
     properties = {},
   } = options;
 
-  return model.fields.filter((field) => {
-    return !onlyRequired || field.isRequired;
-  }).reduce((previousValue, field) => {
+  return model.fields.reduce((previousValue, field) => {
     let value;
 
     const hasRange = field.minimum != null || field.maximum != null;
     const hasDefault = field.default != null;
     const hasExample = field.example != null;
+    const hasOverride = properties.hasOwnProperty(field.name);
 
-    if (properties.hasOwnProperty(field.name)) {
+    if (onlyRequired && !field.isRequired && !hasOverride) {
+      return previousValue;
+    }
+
+    if (hasOverride) {
       value = properties[field.name];
     } else if (hasExample && useExample) {
       value = field.example;

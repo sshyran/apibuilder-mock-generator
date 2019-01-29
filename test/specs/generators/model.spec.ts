@@ -310,6 +310,37 @@ describe('model generator', () => {
     expect(mock).toHaveProperty('name', 'Pluto');
   });
 
+  test('can only override fields defined in the model specifications', () => {
+    const schema = createApiBuilderServiceConfig({
+      models: [{
+        name: 'pet',
+        plural: 'pets',
+        fields: [{
+          name: 'id',
+          type: 'uuid',
+          attributes: [],
+          required: true,
+        }, {
+          name: 'name',
+          type: 'string',
+          attributes: [],
+          required: true,
+        }],
+        attributes: [],
+      }],
+    });
+    const generator = createMockGenerator(schema);
+    const mock = generator.model('pet', {
+      properties: {
+        notInSpec: 'someValue',
+      },
+    });
+    expect(mock).toEqual({
+      id: expect.any(String),
+      name: expect.any(String),
+    });
+  });
+
   test('takes into consideration maximum value for field of type array', () => {
     const schema = createApiBuilderServiceConfig({
       models: [{
@@ -452,5 +483,51 @@ describe('model generator', () => {
     const mock = generator.model('pet');
     expect(mock).toHaveProperty('name', expect.any(String));
     expect(mock.name.length).toBeGreaterThanOrEqual(10);
+  });
+
+  test('copies non-required properties when only required fields are generated', () => {
+    const schema = createApiBuilderServiceConfig({
+      enums: [{
+        name: 'gender',
+        plural: 'genders',
+        values: [
+          { name: 'male' },
+          { name: 'female' },
+        ],
+        attributes: [],
+      }],
+      models: [{
+        name: 'pet',
+        plural: 'pets',
+        fields: [{
+          name: 'id',
+          type: 'uuid',
+          attributes: [],
+          required: true,
+        }, {
+          name: 'name',
+          type: 'string',
+          attributes: [],
+          required: false,
+        }, {
+          name: 'gender',
+          type: 'gender',
+          attributes: [],
+          required: false,
+        }],
+        attributes: [],
+      }],
+    });
+    const generator = createMockGenerator(schema);
+    const mock = generator.model('pet', {
+      onlyRequired: true,
+      properties: {
+        name: 'Pluto',
+      },
+    });
+    expect(mock).toEqual({
+      id: expect.any(String),
+      name: 'Pluto',
+    });
   });
 });
