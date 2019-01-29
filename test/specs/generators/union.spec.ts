@@ -1,3 +1,5 @@
+/* tslint:disable:max-line-length */
+
 import { createMockGenerator } from '../../../src/index';
 import { createApiBuilderServiceConfig } from '../../helpers/apibuilder';
 
@@ -181,4 +183,3 @@ describe('union generator', () => {
     });
   });
 });
-

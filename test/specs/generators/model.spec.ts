@@ -1,5 +1,3 @@
-/* tslint:disable max-line-length */
-
 import { createMockGenerator } from '../../../src/index';
 import { createApiBuilderServiceConfig } from '../../helpers/apibuilder';
 
@@ -181,7 +179,7 @@ describe('model generator', () => {
         attributes: [],
       }],
     });
-    const generator = createMockGenerator(schema)
+    const generator = createMockGenerator(schema);
     const mock = generator.model('pet', {
       onlyRequired: false,
     });
@@ -222,7 +220,7 @@ describe('model generator', () => {
         attributes: [],
       }],
     });
-    const generator = createMockGenerator(schema)
+    const generator = createMockGenerator(schema);
     const mock = generator.model('pet', {
       useDefault: true,
       onlyRequired: false,
@@ -250,7 +248,7 @@ describe('model generator', () => {
         attributes: [],
       }],
     });
-    const generator = createMockGenerator(schema)
+    const generator = createMockGenerator(schema);
     const mock = generator.model('pet', {
       useExample: true,
     });
@@ -479,7 +477,7 @@ describe('model generator', () => {
         attributes: [],
       }],
     });
-    const generator = createMockGenerator(schema)
+    const generator = createMockGenerator(schema);
     const mock = generator.model('pet');
     expect(mock).toHaveProperty('name', expect.any(String));
     expect(mock.name.length).toBeGreaterThanOrEqual(10);

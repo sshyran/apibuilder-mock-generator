@@ -2,7 +2,7 @@ import {
   ApiBuilderPrimitiveType,
   ApiBuilderArray,
   ApiBuilderService,
-  FullyQualifiedName
+  FullyQualifiedName,
 } from 'apibuilder-js';
 
 import { mockArray } from '../../../src/generators';
@@ -70,7 +70,7 @@ describe('array generator', () => {
         expect(value).toEqual(expect.objectContaining({
           name: expect.any(String),
         }));
-      })
+      });
     });
   });
 

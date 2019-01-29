@@ -11,10 +11,10 @@ describe('enum generator', () => {
     ];
     const generator = createMockGenerator(createApiBuilderServiceConfig({
       enums: [{
+        values,
         attributes: [],
         name: 'breed',
         plural: 'breeds',
-        values,
       }],
     }));
     const mock = generator.enum('breed');

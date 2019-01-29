@@ -2,13 +2,15 @@
   "name": "apibuilder-mock-generator",
   "version": "0.0.5",
   "description": "A mock data generator based on API Builder specifications for JavaScript",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf dist",
     "coverage": "jest --coverage",
-    "lint": "tslint -c tslint.json -p tsconfig.json './src/**/*.{js,ts}'",
+    "lint": "npm run lint:src && npm run lint:test",
+    "lint:src": "tslint -c ./tslint.json -p ./tsconfig.json './src/**/*.ts'",
+    "lint:test": "tslint -c ./tslint.json -p ./tsconfig.json './test/**/*.ts'",
     "prepare": "npm run clean && npm run build",
     "test": "jest"
   },

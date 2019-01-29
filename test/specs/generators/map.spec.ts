@@ -2,7 +2,7 @@ import {
   ApiBuilderMap,
   ApiBuilderPrimitiveType,
   ApiBuilderService,
-  FullyQualifiedName
+  FullyQualifiedName,
 } from 'apibuilder-js';
 
 import { mockMap } from '../../../src/generators';
