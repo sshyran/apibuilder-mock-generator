@@ -73,7 +73,8 @@ export class Generator {
 
     if (operation == null) {
       throw new Error(
-        `could not find operation matching specified options in '${this.service}' service`,
+        `'${params.operation} ${params.path}' did not match an operation `
+        + `in '${this.service}' service.`,
       );
     }
 
@@ -81,7 +82,8 @@ export class Generator {
 
     if (response == null) {
       throw new Error(
-        `could not find response matching specified options in '${this.service}' service`,
+        `A ${params.response} response for '${params.operation} ${params.path}' operation`
+        + `is not available in '${this.service}' service`,
       );
     }
 
