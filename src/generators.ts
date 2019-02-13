@@ -25,7 +25,7 @@ type Map<T> = {
 export function mockPrimitive(type: ApiBuilderPrimitiveType): any {
   switch (type.fullName) {
     case Kind.STRING:
-      return faker.lorem.word();
+      return faker.random.word();
     case Kind.BOOLEAN:
       return faker.random.boolean();
     case Kind.DATE_ISO8601:
