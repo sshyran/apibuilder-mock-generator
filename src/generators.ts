@@ -18,10 +18,6 @@ import {
 
 import faker from 'faker';
 
-type Map<T> = {
-  [key: string]: T,
-};
-
 export function mockPrimitive(type: ApiBuilderPrimitiveType): any {
   switch (type.fullName) {
     case Kind.STRING:
@@ -74,8 +70,8 @@ export function mockArray(
     .filter(type => type != null);
 }
 
-export function mockMap(map: ApiBuilderMap): Map<any> {
-  return Array.from({
+export function mockMap(map: ApiBuilderMap): Record<string, any> {
+  return Array.from<Record<string, any>>({
     length: faker.random.number({ min: 1, max: 3 }),
   }).reduce(
     previousValue => ({
@@ -95,13 +91,13 @@ export interface ModelGeneratorOptions {
   readonly onlyRequired?: boolean;
   readonly useDefault?: boolean;
   readonly useExample?: boolean;
-  readonly properties?: Map<any>;
+  readonly properties?: Record<string, any>;
 }
 
 export function mockModel(
   model: ApiBuilderModel,
   options: ModelGeneratorOptions = {},
-): Map<string> {
+): Record<string, any> {
   const {
     onlyRequired = false,
     useDefault = false,
@@ -150,7 +146,7 @@ export function mockModel(
 
 export interface UnionGeneratorOptions {
   readonly type?: string;
-  readonly properties?: Map<any>;
+  readonly properties?: Record<string, any>;
 }
 
 export function mockUnion(
@@ -201,7 +197,7 @@ export function mockResponse(response: ApiBuilderResponse) {
 
 export function mock(type: ApiBuilderPrimitiveType): any;
 export function mock(type: ApiBuilderArray, options?: ArrayGeneratorOptions): any[];
-export function mock(type: ApiBuilderMap): Map<string>;
+export function mock(type: ApiBuilderMap): Record<string, any>;
 export function mock(type: ApiBuilderModel, options?: ModelGeneratorOptions): object;
 export function mock(type: ApiBuilderEnum): string;
 export function mock(type: ApiBuilderUnion): any;
